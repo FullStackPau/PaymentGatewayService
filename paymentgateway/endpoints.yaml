@@ -1,0 +1,252 @@
+openapi: 3.0.0
+info:
+  title: "Payments API"
+  version: "1.0.0"
+paths:
+  /payment/v1/{provider}/pay:
+    post:
+      summary: "Process a payment (version 1)"
+      description: "Endpoint to process a payment with version 1 of the API."
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+            enum: ["stripe", "paypal", "mercadopago"]
+          description: "Payment service provider"
+      requestBody:
+        description: "Payment data"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentData"
+      responses:
+        200:
+          description: "Payment was successful for provider: {providername}"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                example1:
+                  summary: "Example successful payment response"
+                  value:
+                    status: "success"
+                    message: "Payment was successful for provider: {providername}"
+        404:
+          description: "Payment provider not found"
+        500:
+          description: "Not enough amount of money"
+
+  /payment/v1/{provider}/reimburse:
+    post:
+      summary: "Process a reimbursement (version 1)"
+      description: "Endpoint to process a reimbursement with version 1 of the API."
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+            enum: ["stripe", "paypal", "mercadopago"]
+          description: "Payment service provider"
+      requestBody:
+        description: "Reimbursement data"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: string
+                  description: "Product associated with the reimbursement"
+              required:
+                - product
+            examples:
+              example1:
+                summary: "Example reimbursement request"
+                value:
+                  product: "Headphones"
+      responses:
+        200:
+          description: "Partial Reimburse was successful complete with payment provider: {provider}"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                example1:
+                  summary: "Example successful reimbursement response"
+                  value:
+                    status: "success"
+                    message: "Partial Reimburse was successful complete with payment provider: {provider}"
+        404:
+          description: "Payment provider not found"
+        500:
+          description: "Invalid Payment Gateway"
+
+  /payment/v1/{provider}/partialreimburse:
+    post:
+      summary: "Process a partial reimbursement (version 1)"
+      description: "Endpoint to process a partial reimbursement with version 1 of the API."
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+            enum: ["stripe", "paypal", "mercadopago"]
+          description: "Payment service provider"
+      requestBody:
+        description: "Partial reimbursement data"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: string
+                  description: "Product associated with the partial reimbursement"
+              required:
+                - product
+            examples:
+              example1:
+                summary: "Example partial reimbursement request"
+                value:
+                  product: "Headphones"
+      responses:
+        200:
+          description: "Partial Reimburse was successful complete with provider: {providername}"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                example1:
+                  summary: "Example successful partial reimbursement response"
+                  value:
+                    status: "success"
+                    message: "Partial Reimburse was successful complete with provider: {providername}"
+        404:
+          description: "Product not Found"
+
+  /payment/v2/{provider}/pay:
+    post:
+      summary: "Process a payment (version 2)"
+      description: "Endpoint to process a payment with version 2 of the API."
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+            enum: ["stripe", "paypal", "mercadopago"]
+          description: "Payment service provider"
+      requestBody:
+        description: "Payment data"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentData"
+      responses:
+        200:
+          description: "Payment was successful for provider: {providername}"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                example1:
+                  summary: "Example successful payment response"
+                  value:
+                    status: "success"
+                    message: "Payment was successful for provider: {providername}"
+        404:
+          description: "Payment provider not found"
+        500:
+          description: "Not enough amount of money"
+
+  /payment/v2/{provider}/reimburse:
+    post:
+      summary: "Process a reimbursement (version 2)"
+      description: "Endpoint to process a reimbursement with version 2 of the API."
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+            enum: ["stripe", "paypal", "mercadopago"]
+          description: "Payment service provider"
+      requestBody:
+        description: "Reimbursement data"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: string
+                  description: "Product associated with the reimbursement"
+              required:
+                - product
+            examples:
+              example1:
+                summary: "Example reimbursement request"
+                value:
+                  product: "Headphones"
+      responses:
+        200:
+          description: "Partial Reimburse was successful complete with payment provider: {provider}"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                example1:
+                  summary: "Example successful reimbursement response"
+                  value:
+                    status: "success"
+                    message: "Partial Reimburse was successful complete with payment provider: {provider}"
+        404:
+          description: "Payment provider not found"
+        500:
+          description: "Invalid Payment Gateway"
+
+components:
+  schemas:
+    PaymentData:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: "Payment amount"
+
+    ReimburseData:
+      type: object
+      properties:
+        product:
+          type: string
+          description: "Product associated with the reimbursement"
+    PartialReimburseData:
+      type: object
+      properties:
+        product:
+          type: string
+          description: "Product associated with the partial reimbursement"
+
+    SuccessResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+          description: "Status Error boolean"
+        message:
+          type: string
+          description: "Message describing the result of the operation"

@@ -1,0 +1,19 @@
+version: '3'
+services:
+  backoffice:
+    build:
+      context: ./backoffice
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backoffice:/app
+    depends_on:
+      - paymentgatewayservice
+
+  paymentgatewayservice:
+    build:
+      context: ./paymentgateway
+      dockerfile: Dockerfile
+    volumes:
+      - ./paymentgateway:/app
