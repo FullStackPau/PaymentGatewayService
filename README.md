@@ -1,6 +1,10 @@
 ### How to start the project
 - Just execute docker compose up --build<br />
 It will transpile all the typescript code in to javascript code in the dist directory.
+Fixes: I think I solved the problem but just in case: if you run the first time and the node modules is missing, you have to run npm install inside backoffice and paymentgateway
+- To access to the endpoints documentation: http://localhost:8000/docs
+- The Backbone service is hosted in http://localhost:8000
+- The Payment Gateway service is hosted in http://localhost:8200 but you can't access directly (restricted with docker)
 
 ### Payment Gateway Services
 This project consists of two services: the Backbone Service and the Payment Gateway Service. The Backbone Service acts as an intermediary, redirecting requests to the Payment Gateway Service, which processes them as pay, reimburse, or partial reimburse transactions.
